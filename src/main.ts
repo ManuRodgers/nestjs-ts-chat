@@ -3,11 +3,12 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { ValidationPipe, Logger } from '@nestjs/common';
 import * as config from 'config';
-import { IServerConfig } from './config/interfaces/server-config.interface';
+import { IServerConfig } from './config/interfaces';
 
 const serverConfig: IServerConfig = config.get('server');
 // hello
 async function bootstrap() {
+  // for github test
   const logger = new Logger(`bootstrap`, true);
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   if (process.env.NODE_ENV === 'development') {
