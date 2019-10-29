@@ -1,0 +1,12 @@
+{
+  "server": {
+    "port": 9093
+  },
+  "db": {
+    "port": 5432,
+    "database": "chat"
+  },
+  "jwt": {
+    "expiresIn": 3600
+  }
+}
