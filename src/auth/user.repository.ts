@@ -10,14 +10,20 @@ import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
-  async signup(authCredentialsDto: AuthCredentialsDto): Promise<void> {
+  async signup(authCredentialsDto: AuthCredentialsDto): Promise<User> {
+    console.log(
+      'TCL: UserRepository -> authCredentialsDto',
+      authCredentialsDto,
+    );
     try {
-      const { email, password } = authCredentialsDto;
+      const { email, password, kind } = authCredentialsDto;
       const user = new User();
       user.email = email;
+      user.kind = kind;
       user.salt = await bcrypt.genSalt(8);
       user.password = await this.hashPassword(password, user.salt);
       await user.save();
+      return user;
     } catch (error) {
       if (error.code === '23505') {
         throw new ConflictException(error.detail);
@@ -31,13 +37,15 @@ export class UserRepository extends Repository<User> {
     try {
       const { email, password } = authCredentialsDto;
       const user = await this.findOne({ email });
+      console.log('TCL: UserRepository -> user', user);
       if (user && (await user.validatePassword(password))) {
         return user.email;
       } else {
-        return null;
+        console.log(`wrong`);
+        throw new Error();
       }
     } catch (error) {
-      throw new InternalServerErrorException(error.detail);
+      throw new UnauthorizedException(error.detail);
     }
   }
 

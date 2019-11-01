@@ -2,18 +2,19 @@ import {
   IsString,
   MinLength,
   MaxLength,
-  Matches,
   IsEmail,
+  IsOptional,
 } from 'class-validator';
-
+import { Kind } from '../../interfaces/index';
 export class AuthCredentialsDto {
   @IsEmail()
-  @MinLength(4)
-  @MaxLength(20)
   email: string;
 
   @IsString()
-  @MinLength(8)
+  @MinLength(6)
   @MaxLength(20)
   password: string;
+
+  @IsOptional()
+  kind?: Kind;
 }

@@ -7,6 +7,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { Kind } from '../interfaces/';
 
 @Entity()
 @Unique(['email'])
@@ -22,6 +23,9 @@ export class User extends BaseEntity {
 
   @Column()
   salt: string;
+
+  @Column()
+  kind: Kind;
 
   // relations
 

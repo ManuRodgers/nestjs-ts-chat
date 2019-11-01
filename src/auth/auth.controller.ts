@@ -6,18 +6,32 @@ import { AuthService } from './auth.service';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { User } from './user.entity';
 import { GetUser } from './get-user.decorator';
+import { IResult, CodeNumber } from '../interfaces/result.interface';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('/signup')
-  async signup(@Body() authCredentialsDto: AuthCredentialsDto): Promise<void> {
-    console.log(
-      'TCL: AuthController -> constructor -> authCredentialsDto',
-      authCredentialsDto,
-    );
-    await this.authService.signup(authCredentialsDto);
+  async signup(
+    @Body() authCredentialsDto: AuthCredentialsDto,
+  ): Promise<IResult<User>> {
+    try {
+      const user = await this.authService.signup(authCredentialsDto);
+      delete user.password;
+      delete user.salt;
+      return {
+        code: CodeNumber.SUCCESS,
+        message: 'register successfully',
+        data: user,
+      };
+    } catch (error) {
+      return {
+        code: CodeNumber.FAILED,
+        message: 'register unsuccessfully',
+        error,
+      };
+    }
   }
   @Post('/signin')
   async signIp(

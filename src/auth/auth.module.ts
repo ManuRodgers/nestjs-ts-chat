@@ -1,13 +1,15 @@
-import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
+import * as config from 'config';
+
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UserRepository } from './user.repository';
-import * as config from 'config';
 import { JwtStrategy } from './jwt.strategy';
 import { IJwtConfig } from './interfaces/jwt-config.interface';
+import { UserController } from './user.controller';
 
 const jwtConfig: IJwtConfig = config.get('jwt');
 
@@ -25,7 +27,7 @@ const jwtConfig: IJwtConfig = config.get('jwt');
     }),
     TypeOrmModule.forFeature([UserRepository]),
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, UserController],
   providers: [JwtStrategy, AuthService],
   exports: [JwtStrategy, PassportModule, AuthService],
 })
