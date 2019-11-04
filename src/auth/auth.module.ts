@@ -10,6 +10,7 @@ import { UserRepository } from './user.repository';
 import { JwtStrategy } from './jwt.strategy';
 import { IJwtConfig } from './interfaces/jwt-config.interface';
 import { UserController } from './user.controller';
+import { UserService } from './user.service';
 
 const jwtConfig: IJwtConfig = config.get('jwt');
 
@@ -28,7 +29,7 @@ const jwtConfig: IJwtConfig = config.get('jwt');
     TypeOrmModule.forFeature([UserRepository]),
   ],
   controllers: [AuthController, UserController],
-  providers: [JwtStrategy, AuthService],
+  providers: [JwtStrategy, AuthService, UserService],
   exports: [JwtStrategy, PassportModule, AuthService],
 })
 export class AuthModule {}

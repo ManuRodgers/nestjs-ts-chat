@@ -27,6 +27,24 @@ export class User extends BaseEntity {
   @Column()
   kind: Kind;
 
+  // boss
+  @Column({ nullable: true })
+  avatar?: string;
+
+  @Column({ nullable: true })
+  title?: string;
+
+  @Column({ nullable: true })
+  company?: string;
+
+  @Column({ nullable: true })
+  money?: string;
+
+  @Column({ nullable: true })
+  description?: string;
+
+  // genius
+
   // relations
 
   async validatePassword(password: string): Promise<boolean> {
