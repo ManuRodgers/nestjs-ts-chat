@@ -44,6 +44,14 @@ export class User extends BaseEntity {
   description?: string;
 
   // genius
+  @Column({ nullable: true })
+  job?: string;
+
+  @Column({ nullable: true })
+  salary?: string;
+
+  @Column({ nullable: true })
+  profile?: string;
 
   // relations
 
