@@ -5,6 +5,8 @@ import {
   HttpStatus,
   Put,
   Body,
+  Param,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { GetUser } from './get-user.decorator';
 import { User } from './user.entity';
@@ -45,6 +47,28 @@ export class UserController {
         message: 'get current user unsuccessfully',
         error,
         data: user,
+      };
+    }
+  }
+
+  @Get('/targetUser/:id')
+  async getUserById(
+    @Param('id', ParseUUIDPipe) id: number,
+  ): Promise<IResult<User>> {
+    try {
+      const foundUser = await this.userService.getUserById(id);
+      delete foundUser.password;
+      delete foundUser.salt;
+      return {
+        code: CodeNumber.SUCCESS,
+        message: 'get target user successfully',
+        data: foundUser,
+      };
+    } catch (error) {
+      return {
+        code: CodeNumber.FAILED,
+        message: 'get target user unsuccessfully',
+        error,
       };
     }
   }

@@ -49,4 +49,8 @@ export class UserService {
   async getBossList(): Promise<User[]> {
     return this.userRepository.find({ kind: Kind.BOSS });
   }
+
+  async getUserById(id: number): Promise<User> {
+    return this.userRepository.findOne(id);
+  }
 }
