@@ -16,3 +16,7 @@ export enum Kind {
   GENIUS = 'GENIUS',
   BOSS = 'BOSS',
 }
+export enum Position {
+  RIGHT = 'RIGHT',
+  LEFT = 'LEFT',
+}

@@ -1,22 +1,29 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  BaseEntity,
-  Unique,
-  OneToMany,
-  CreateDateColumn,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
+import { Position } from '../interfaces/index';
 
 @Entity()
 export class Chat extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: number;
 
-  @CreateDateColumn({
-    precision: null,
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  createdAt: Date;
+  @Column()
+  text: string;
+
+  @Column()
+  from: string;
+
+  @Column()
+  to: string;
+
+  @Column()
+  combinedId: string;
+
+  @Column()
+  position: Position;
+
+  @Column()
+  isRead: boolean;
+
+  @Column()
+  createdAt: number;
 }
