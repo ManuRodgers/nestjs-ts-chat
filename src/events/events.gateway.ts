@@ -30,7 +30,6 @@ export class EventsGateway {
     @ConnectedSocket() io: Socket,
   ): Promise<WsResponse<unknown>> {
     try {
-      console.log('TCL: EventsGateway -> constructor -> data', data);
       const { text, from, to, combinedId, position, createdAt, isRead } = data;
       const newChat = this.chatRepository.create({
         text,
@@ -42,8 +41,9 @@ export class EventsGateway {
         createdAt,
       });
       await newChat.save();
-      const event = 'sendMsgAsync';
+      // broadcast the new chat to every one
       this.server.emit(`receiveMsgAsync`, newChat);
+      const event = 'sendMsgAsync';
       return { event, data: newChat };
     } catch (error) {
       console.error('TCL: error', error);
@@ -52,16 +52,22 @@ export class EventsGateway {
 
   async getChatListByCombinedId(combinedId: string): Promise<Chat[]> {
     try {
-      const getChatListByCombinedId = await this.chatRepository.find({
+      return this.chatRepository.find({
         where: {
           combinedId,
         },
       });
-      console.log(
-        'TCL: EventsGateway -> constructor -> getChatListByCombinedId',
-        getChatListByCombinedId,
-      );
-      return getChatListByCombinedId;
+    } catch (error) {
+      console.error('TCL: error', error);
+    }
+  }
+  async getChatListByToId(toId: string): Promise<Chat[]> {
+    try {
+      return this.chatRepository.find({
+        where: {
+          to: toId,
+        },
+      });
     } catch (error) {
       console.error('TCL: error', error);
     }

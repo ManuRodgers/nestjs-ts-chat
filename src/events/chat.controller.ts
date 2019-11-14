@@ -11,20 +11,36 @@ export class ChatController {
   async getChatListByCombinedId(
     @Body(`combinedId`) combinedId: string,
   ): Promise<IResult<Chat[]>> {
-    const chatListByCombinedId = await this.eventsGateway.getChatListByCombinedId(
-      combinedId,
-    );
     try {
       return {
         code: CodeNumber.SUCCESS,
         message: ' getChatListByCombinedId successfully',
-        data: chatListByCombinedId,
+        data: await this.eventsGateway.getChatListByCombinedId(combinedId),
       };
     } catch (error) {
       console.error('TCL: error', error);
       return {
         code: CodeNumber.FAILED,
         message: ' getChatListByCombinedId unsuccessfully',
+        error,
+      };
+    }
+  }
+  @Post(`/chatListByToId`)
+  async getChatListByToId(
+    @Body(`toId`) toId: string,
+  ): Promise<IResult<Chat[]>> {
+    try {
+      return {
+        code: CodeNumber.SUCCESS,
+        message: ' getChatListByToId successfully',
+        data: await this.eventsGateway.getChatListByToId(toId),
+      };
+    } catch (error) {
+      console.error('TCL: error', error);
+      return {
+        code: CodeNumber.FAILED,
+        message: ' getChatListByToId unsuccessfully',
         error,
       };
     }
