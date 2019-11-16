@@ -5,8 +5,6 @@ import {
   WebSocketServer,
   WsResponse,
   ConnectedSocket,
-  OnGatewayInit,
-  OnGatewayConnection,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import * as config from 'config';
@@ -56,6 +54,9 @@ export class EventsGateway {
         where: {
           combinedId,
         },
+        order: {
+          createdAt: 'ASC',
+        },
       });
     } catch (error) {
       console.error('TCL: error', error);
@@ -68,6 +69,28 @@ export class EventsGateway {
           to: toId,
         },
       });
+    } catch (error) {
+      console.error('TCL: error', error);
+    }
+  }
+  async getChatListByUserId(userId: string): Promise<Chat[]> {
+    try {
+      return this.chatRepository.find({
+        where: [{ to: userId }, { from: userId }],
+      });
+    } catch (error) {
+      console.error('TCL: error', error);
+    }
+  }
+  async readMsgAsync(from: string, to: string): Promise<void> {
+    try {
+      const chatQuery = await this.chatRepository
+        .createQueryBuilder(`chat`)
+        .update()
+        .set({ isRead: true })
+        .where('chat.to = :to', { to })
+        .andWhere('chat.from = :from', { from })
+        .execute();
     } catch (error) {
       console.error('TCL: error', error);
     }
