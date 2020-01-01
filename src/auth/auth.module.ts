@@ -21,7 +21,7 @@ const jwtConfig: IJwtConfig = config.get('jwt');
       session: true,
     }),
     JwtModule.register({
-      secret: jwtConfig.secret,
+      secret: process.env.JWT_SECRET || jwtConfig.secret,
       signOptions: {
         expiresIn: jwtConfig.expiresIn,
       },

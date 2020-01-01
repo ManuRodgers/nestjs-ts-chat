@@ -1,11 +1,11 @@
 export interface IDbConfig {
-  type?: DbEnum;
-  host?: string;
-  username?: string;
-  password?: string;
-  database?: string;
-  port?: number;
-  synchronize?: boolean | string;
+  type: DbEnum;
+  host: string;
+  username: string;
+  password: string;
+  database: string;
+  port: number;
+  synchronize: boolean;
 }
 
 export enum DbEnum {

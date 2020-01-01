@@ -11,17 +11,23 @@ const serverConfig: IServerConfig = config.get('server');
 async function bootstrap() {
   // for github test
   const logger = new Logger(`bootstrap`, true);
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    cors: true,
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  // if (process.env.NODE_ENV === 'development') {
+  //   app.enableCors();
+  // } else {
+  //   logger.log(`Accepting requests from origin ${serverConfig.origin}`);
+  //   app.enableCors({
+  //     origin: serverConfig.origin,
+  //     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  //     allowedHeaders: 'Content-Type, Accept',
+  //   });
+  // }
+  app.enableCors({
+    origin: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders:
+      'Content-Type, Accept,Authorization,Access-Control-Allow-Methods,Access-Control-Request-Headers',
   });
-  if (process.env.NODE_ENV === 'development') {
-    app.enableCors();
-  } else {
-    app.enableCors({
-      origin: serverConfig.origin,
-    });
-    logger.log(`Accepting requests from origin ${serverConfig.origin}`);
-  }
   // Enable global validation pipe
   app.useGlobalPipes(
     new ValidationPipe({
@@ -33,3 +39,5 @@ async function bootstrap() {
   logger.log(`nest app is running on port ${port}`);
 }
 bootstrap();
+
+// nestjs-ts-chat.ap-southeast-2.elasticbeanstalk.com

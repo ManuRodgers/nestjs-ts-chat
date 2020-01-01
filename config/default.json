@@ -1,6 +1,7 @@
 {
   "server": {
-    "port": 9093
+    "port": 9093,
+    "origin": "http://react-ts-chat.s3-website-ap-southeast-2.amazonaws.com"
   },
   "db": {
     "port": 5432,
